@@ -12,7 +12,7 @@ namespace Budget
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("This is budget program written by Abbas Ally");
+            Console.WriteLine("This is a budgeting program written by Abbas Ally");
         }
     }
 }
