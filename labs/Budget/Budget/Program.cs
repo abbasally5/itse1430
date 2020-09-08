@@ -19,25 +19,54 @@ namespace Budget
             Console.WriteLine("Enter Account Number: ");
             string accountNumber = GetAccountNumber();
             Console.WriteLine("Enter Starting Balance: ");
-            decimal balance = ReadDecimal(0.0M);
+            decimal startingBalance = ReadDecimal(0.0M);
+
+            DisplayMenu(startingBalance);
             
         }
 
-        private static decimal ReadDecimal ( decimal minValue )
+        private static void DisplayMenu ( decimal currentBalance )
         {
             do
             {
+                Console.WriteLine("\nCurrent Balance: " + currentBalance.ToString("C") + "\n");
+                Console.WriteLine("Choose a menu option: ");
+                Console.WriteLine("3) Quit");
                 string value = Console.ReadLine();
-
-                decimal result;
-                if (Decimal.TryParse(value, out result))
+                int menuOption;
+                if (Int32.TryParse(value, out menuOption))
                 {
-                    if (result >= minValue)
-                        return result;
-                    else
-                        DisplayError("Starting balance must be at least " + minValue);
+                    switch (menuOption)
+                    {
+                        case 3:
+                            bool quit = DisplayQuit();
+                            if (quit)
+                                return;
+                            break;
+                        default:
+                            DisplayError("Please enter a valid menu option");
+                            break;
+                    }
                 }
-                DisplayError("Starting balance must be a monetary value");
+                else
+                {
+                    DisplayError("Please enter a number corresponding to a menu option");
+                }
+            } while (true);
+        }
+
+        private static bool DisplayQuit ()
+        {
+            Console.WriteLine("Are you sure you want to quit? (Y/N): ");
+            do
+            {
+                string response = ReadString(true);
+                switch (response.ToUpper())
+                {
+                    case "Y": return true;
+                    case "N": return false;
+                    default: DisplayError("Please respond with Y or N"); break;
+                }
             } while (true);            
         }
 
@@ -94,5 +123,31 @@ namespace Budget
                 DisplayError("Value is required");
             }
         }
+
+        private static decimal ReadDecimal ( decimal minValue )
+        {
+            do
+            {
+                string value = Console.ReadLine();
+
+                decimal result;
+                if (Decimal.TryParse(value, out result))
+                {
+                    if (result >= minValue)
+                        return result;
+                    else
+                        DisplayError("Starting balance must be at least " + minValue);
+                }
+                DisplayError("Starting balance must be a monetary value");
+            } while (true);
+        }
+
+        //private static int ReadInt ( int minValue )
+        //{
+        //    do
+        //    {
+
+        //    }
+        //}
     }
 }
