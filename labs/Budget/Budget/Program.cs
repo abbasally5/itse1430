@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.Globalization;
 
 namespace Budget
 {
@@ -29,8 +30,10 @@ namespace Budget
         {
             do
             {
-                Console.WriteLine("\nCurrent Balance: " + currentBalance.ToString("C") + "\n");
+                Console.WriteLine();
+                Console.WriteLine("Current Balance: " + currentBalance.ToString("C") + "\n");
                 Console.WriteLine("Choose a menu option: ");
+                Console.WriteLine("1) Add Income");
                 Console.WriteLine("3) Quit");
                 string value = Console.ReadLine();
                 int menuOption;
@@ -38,6 +41,10 @@ namespace Budget
                 {
                     switch (menuOption)
                     {
+                        case 1:
+                            decimal income = AddIncome();
+                            currentBalance += income;
+                            break;
                         case 3:
                             bool quit = DisplayQuit();
                             if (quit)
@@ -53,6 +60,20 @@ namespace Budget
                     DisplayError("Please enter a number corresponding to a menu option");
                 }
             } while (true);
+        }
+
+        private static decimal AddIncome ()
+        {
+            Console.WriteLine("Amount to Add: ");
+            decimal amount = ReadDecimal(0.0M);
+            Console.WriteLine("Description: ");
+            string description = ReadString(true);
+            Console.WriteLine("Category: ");
+            string category = ReadString(false);
+            Console.WriteLine("Entry Date: ");
+            DateTime date = ReadDateTime();
+
+            return amount;
         }
 
         private static bool DisplayQuit ()
@@ -142,12 +163,22 @@ namespace Budget
             } while (true);
         }
 
-        //private static int ReadInt ( int minValue )
-        //{
-        //    do
-        //    {
+        private static DateTime ReadDateTime ()
+        {
+            do
+            {
+                string value = Console.ReadLine();
 
-        //    }
-        //}
+                if (value == "")
+                    return DateTime.Now;
+
+                DateTime result;
+                if (DateTime.TryParseExact(value, "MM/dd/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out result ))
+                    return result;
+
+                DisplayError("Please enter a date in the MM/dd/yyyy format");
+            } while (true);
+
+        }
     }
 }
