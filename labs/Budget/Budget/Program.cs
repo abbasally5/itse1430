@@ -34,6 +34,7 @@ namespace Budget
                 Console.WriteLine("Current Balance: " + currentBalance.ToString("C") + "\n");
                 Console.WriteLine("Choose a menu option: ");
                 Console.WriteLine("1) Add Income");
+                Console.WriteLine("2) Add Expense");
                 Console.WriteLine("3) Quit");
                 string value = Console.ReadLine();
                 int menuOption;
@@ -42,8 +43,23 @@ namespace Budget
                     switch (menuOption)
                     {
                         case 1:
-                            decimal income = AddIncome();
+                            Console.WriteLine("ADD INCOME");
+                            decimal income = GetAmount();
                             currentBalance += income;
+                            DisplaySuccess("Income of " + income.ToString("C") + " successfully added");
+                            break;
+                        case 2:
+                            Console.WriteLine("ADD EXPENSE");
+                            decimal expense = GetAmount();
+                            if (expense > currentBalance)
+                            {
+                                DisplayError("Expense denied. Insufficient Funds");
+                            }
+                            else
+                            {
+                                currentBalance -= expense;
+                                DisplaySuccess("Expense of " + expense.ToString("C") + " successfully deducted");
+                            }                            
                             break;
                         case 3:
                             bool quit = DisplayQuit();
@@ -62,9 +78,9 @@ namespace Budget
             } while (true);
         }
 
-        private static decimal AddIncome ()
+        private static decimal GetAmount ()
         {
-            Console.WriteLine("Amount to Add: ");
+            Console.WriteLine("Amount: ");
             decimal amount = ReadDecimal(0.0M);
             Console.WriteLine("Description: ");
             string description = ReadString(true);
@@ -124,6 +140,15 @@ namespace Budget
         private static void DisplayError ( string message )
         {
             Console.BackgroundColor = ConsoleColor.Red;
+
+            Console.WriteLine(message);
+
+            Console.ResetColor();
+        }
+
+        private static void DisplaySuccess ( string message )
+        {
+            Console.BackgroundColor = ConsoleColor.Green;
 
             Console.WriteLine(message);
 
