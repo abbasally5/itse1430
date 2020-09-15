@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace MovieLibrary
 {
@@ -87,11 +88,12 @@ namespace MovieLibrary
                 //C++: if (x = 10) ; // Not valid in C#
                 // if (E) S;
                 // if (E) S else S;
-                if (value == "Q") // 2 equal signs => equality
+                //if (value == "Q") // 2 equal signs => equality
+                if (String.Compare(value, "Q", true) == 0)
                     return 'Q';
-                else if (value == "A")
+                else if (String.Compare(value, "A", StringComparison.CurrentCultureIgnoreCase) == 0)
                     return 'A';
-                else if (value == "V")
+                else if (String.Compare(value, "V", true) == 0)
                     return 'V';
 
                 DisplayError("Invalid option");
@@ -139,17 +141,18 @@ namespace MovieLibrary
                 //  2. Any expression type is allowed (for the most part)
                 //  3. Case labels must be unique an compile time constants
                 //  4. Multiple statements are allowed in body of case 
-                switch (value)
+                switch (value.ToLower())
                 {
                     case "X": Console.WriteLine("Wrong value"); break; // break is required
 
-                    case "Y":               // If case statement is empty (includign semicolon) then fallthrough
+                    //case "Y":               // If case statement is empty (includign semicolon) then fallthrough
                     case "y": return true;
 
-                    case "N": 
+                    //case "N": 
                     case "n": return false;
 
-                    case "A":
+                    //case "A":
+                    case "a":
                     {
                         // Use block statement for more than 1 statement
                         Console.WriteLine("wrong value");
@@ -206,17 +209,89 @@ namespace MovieLibrary
 
         static void ViewMovie ()
         {
-            Console.WriteLine(title);
+            Console.WriteLine("Title\t\tRating\tDuration\tIsClassic");
+            //Console.WriteLine("-----------------");
+            Console.WriteLine("".PadLeft(60, '-'));
+
+            // 1. Format arguments
+            // Format string - consists of string characters with arguments specified in curly braces as zero-based ordinals
+            // a. Readable but not great
+            // b. No compile time checking, runtime error
+            //Console.WriteLine("{0}\t{1}\t{2}\t{3}", title, rating, duration, isClassic);
+
+            // 2. String.Format
+            //var message = String.Format("{0}\t{1}\t{2}\t{3}", title, rating, duration, isClassic);
+            //Console.WriteLine(message);
+
+            // 3. String concatenation
+            // Pro: Programmatically build it
+            // Pro: Somewhat readable
+            // Con: Harder to read as it gets longer
+            // Con: Bad performance
+            //var message = title + "\t" + rating + "\t" + duration + "\t" + isClassic; // automatically converts types to strings as long as it starts with a string
+            //var message = title + "\t" + rating + "\t" + duration.ToString() + "\t" + isClassic.ToString();
+            //Console.WriteLine(message);
+
+            // 4. String builder
+            // Pro: Efficient on memory
+            // Pro: Conditional formatting
+            // Con: Longer
+            // Con: Harder to read
+            // Preferred approach for arbitrarily complex strings
+            // We will mostly stick to string.format or string concatenation
+            //var builder = new StringBuilder();
+            //builder.Append(title);
+            //builder.Append("\t");
+            //builder.Append(rating);
+            //builder.Append("\t");
+            //builder.Append(duration);
+            //builder.Append("\t");
+            //builder.Append(isClassic);
+            //builder.Append("\t");
+            //message = builder.ToString();
+            //Console.WriteLine(message);
+
+            // 5. String Joining
+            // not used for fomratting in general, but used for other scenarios
+            //String.Join("\t", title, rating, duration, isClassic);
+            // takes first input (delimiter) and adds it between the other params
+            // uses string builder behind the scenes so almost as efficient
+
+            // Conditional operator C ? T : F
+            // if (C) return T else return F
+            var classicIndicator = isClassic ? "Yes" : "No";
+            // equivalent to
+            //var classicIndicator = "";
+            //if (isClassic)
+            //    classicIndicator = "Yes";
+            //else
+            //    classicIndicator = "No";
+
+            // 6. String interpolation - $
+            // Pro: Use expressions instead of ordinals
+            // Pro: More readable
+            // Pro: Compile time checked
+            // Pro: Compile time only and against literals
+
+
+            var message = $"{title}\t\t{rating}\t{duration}\t\t{classicIndicator}";
+            Console.WriteLine(message);
+
+            // Write description if available
+            if (!String.IsNullOrEmpty(description))
+                Console.WriteLine(description);
+            
+            Console.WriteLine("");
 
             // TODO: Description if available
-            Console.WriteLine(" " + description);
+            //Console.WriteLine(" " + description);
 
             // TODO: Rating if available
-            Console.WriteLine(" " + rating);
+            //Console.WriteLine(" " + rating);
 
-            Console.WriteLine(duration);
+            //Console.WriteLine(duration);
 
-            Console.WriteLine(isClassic);
+            //Console.WriteLine(isClassic);
         }
 
         // Arithmetic (unary)
@@ -279,14 +354,114 @@ namespace MovieLibrary
             //      \' - ' single quote (char literal)
             //      \\ - \
             //      \xHH - hex equivalent \x0A
-            var name = "Bob\c"; // Compiler warning if using unknown escape sequence
+            //var name = "Bob\c"; // Compiler warning if using unknown escape sequence
             var message = "Hello \"Bob\"\nWorld";
 
             // File paths - always have excape sequences
             var filePath = "C:\\Temp\\test.pdf"; // C:\Temp\test.pdf
-            var filePath = @"C:\Temp\test.pdf"; // Verbatim string - compiler ignores \ as escape sequence
+            var filePath2 = @"C:\Temp\test.pdf"; // Verbatim string - compiler ignores \ as escape sequence
 
             // TODO: null and empty string
-        } 
+            var emptyString = "";
+            var spaceString = " ";
+
+            var emptyString2 = String.Empty; // ""
+            var areEqual = emptyString == emptyString2; // True
+
+            // Checking for empty string
+            // 1. comparison
+            var isEmpty1 = emptyString == "";
+            var isEmpty1_Part2 = emptyString == String.Empty;
+
+            // 2. Length
+            var isEmpty2 = emptyString.Length == 0;
+
+            // 3. String.Compare => int
+            //      < 0     left < right
+            //      == 0    left == right
+            //      > 0     left > right
+            var isEmpty3 = String.Compare(emptyString, "") == 0;
+
+            // 4. Preferred String.IsNullOrEmpty => boolean
+            var isEmpty4 = String.IsNullOrEmpty(emptyString); // True
+
+            // Can be bull
+            string nullString = null;
+            var areEqual3 = emptyString == nullString; // False
+            //var willCrash = nullString.Length == 0; // Will crash
+            var willNotBeEqual = String.Compare(emptyString, null) == 0; // False
+
+            //var isEmpty5 = nullString != null && nullString != ""; // inefficient
+
+            // Converting to string E.ToString()
+            // works for any expression no matter the type
+            var asString = emptyString.ToString();
+            asString = 10.ToString(); // "10"
+            asString = (60 * 3).ToString(); // "150"
+
+            // Common Functions -> E.func()
+
+            // Comparison
+            // 1. Relational operator == != ::= case sensitive
+            // 2. String.Compare
+            var relationalCompare = String.Compare("Hello", "hello") == 0; // Case sensitive, culture aware
+            var caseInsesitiveCompare = String.Compare("Hello", "hello", true) == 0; // Case insensitive, culture aware
+            //locale - Windoes cultural settings
+            var ordinalCompare = String.Compare("Hello", "hello", StringComparison.OrdinalIgnoreCase) == 0; // Case insensitive, ordinal (keys, paths)
+
+            // 3. Case conversion - PLEASE DON't DO THIS - doesn't work for all languages
+            // if you have to, ToLower is preferred since it works in more languages
+            var toUpper = "Hello".ToUpper(); // HELLO
+            var toLower = "Hello".ToLower(); // hello
+
+            // trim and padding
+            var areSpacesEqual = "" == " ";
+            var name = "   Bob  \t ";
+
+            name = name.Trim(); // Removes leading and trailing whitespace (newlines, tabs, spaces) - "Bob"
+            // Also have TrimStart, TrimEnd
+
+            filePath2 = filePath2.Trim('\\'); // Overloaded function that lets you specify character to trim
+
+            // PadLeft(#) PadRight(#) - pads to width, never truncates
+            var paddedName = name.PadLeft(10); // "       Bob"
+
+            // String Formatting
+            // 1. format argument overloads WriteLine
+            // 2. String.Format
+            // 3. String concatenation
+            //      Pro: Programmatically build it
+            //      Pro: Somewhat readable
+            //      Con: Harder to read as it gets longer
+            //      Con: Bad performance
+            // 4. String building
+            //      Pro: Efficient on memory
+            //      Pro: Conditional formatting
+            //      Con: Longer
+            //      Con: Harder to read
+            // 5. Joining strings
+            // 6. String interpolation
+
+            // Contains ( string ) => boolean
+            // Index/IndexOfAny ( string ) =? index
+            // StartsWith / EndsWith
+
+            var leftPath = @"C:\temp";
+            var rightPath = "folderA\file.txt";
+
+            var endsWithSlash = leftPath.EndsWith(@"\");
+            var startsWithSlash = rightPath.StartsWith(@"\");
+
+            var path = leftPath;
+            if (endsWithSlash && !startsWithSlash)
+                path += rightPath;
+            else if (endsWithSlash && startsWithSlash)
+                path += rightPath.Substring(1); // "folderA\file.txt"
+            else // !endswithSlash && StartsWithSlash
+                path += rightPath;
+
+        }
+
+        #endregion
     }
 }
