@@ -43,12 +43,15 @@ namespace Budget
                     switch (menuOption)
                     {
                         case 1:
+                        {
                             Console.WriteLine("ADD INCOME");
                             decimal income = GetAmount();
                             currentBalance += income;
                             DisplaySuccess("Income of " + income.ToString("C") + " successfully added");
                             break;
+                        }                           
                         case 2:
+                        {
                             Console.WriteLine("ADD EXPENSE");
                             decimal expense = GetAmount();
                             if (expense > currentBalance)
@@ -61,14 +64,19 @@ namespace Budget
                                 DisplaySuccess("Expense of " + expense.ToString("C") + " successfully deducted");
                             }                            
                             break;
+                        }                            
                         case 3:
+                        {
                             bool quit = DisplayQuit();
                             if (quit)
                                 return;
                             break;
+                        }                            
                         default:
+                        {
                             DisplayError("Please enter a valid menu option");
                             break;
+                        }                            
                     }
                 }
                 else
@@ -140,18 +148,14 @@ namespace Budget
         private static void DisplayError ( string message )
         {
             Console.BackgroundColor = ConsoleColor.Red;
-
             Console.WriteLine(message);
-
             Console.ResetColor();
         }
 
         private static void DisplaySuccess ( string message )
         {
             Console.BackgroundColor = ConsoleColor.Green;
-
             Console.WriteLine(message);
-
             Console.ResetColor();
         }
 
@@ -161,7 +165,7 @@ namespace Budget
             {
                 string value = Console.ReadLine();
 
-                if (!required || value != "")
+                if (!required || !String.IsNullOrEmpty(value))
                 {
                     return value;
                 }
@@ -194,7 +198,7 @@ namespace Budget
             {
                 string value = Console.ReadLine();
 
-                if (value == "")
+                if (String.IsNullOrEmpty(value))
                     return DateTime.Now;
 
                 DateTime result;
