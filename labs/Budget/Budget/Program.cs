@@ -22,16 +22,18 @@ namespace Budget
             Console.WriteLine("Enter Starting Balance: ");
             decimal startingBalance = ReadDecimal(0.0M);
 
-            DisplayMenu(startingBalance);
+            DisplayMenu(accountName, accountNumber, startingBalance);
             
         }
 
-        private static void DisplayMenu ( decimal currentBalance )
+        private static void DisplayMenu ( string accountName, string accountNumber, decimal currentBalance )
         {
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("Current Balance: " + currentBalance.ToString("C") + "\n");
+                Console.WriteLine($"Account Name:\t\t{accountName}");
+                Console.WriteLine($"Account Number\t\t{accountNumber}");
+                Console.WriteLine($"Current Balance:\t{currentBalance.ToString("C")}\n");
                 Console.WriteLine("Choose a menu option: ");
                 Console.WriteLine("1) Add Income");
                 Console.WriteLine("2) Add Expense");
@@ -47,7 +49,7 @@ namespace Budget
                             Console.WriteLine("ADD INCOME");
                             decimal income = GetAmount();
                             currentBalance += income;
-                            DisplaySuccess("Income of " + income.ToString("C") + " successfully added");
+                            DisplaySuccess($"Income of {income.ToString("C")} successfully added");
                             break;
                         }                           
                         case 2:
@@ -61,7 +63,7 @@ namespace Budget
                             else
                             {
                                 currentBalance -= expense;
-                                DisplaySuccess("Expense of " + expense.ToString("C") + " successfully deducted");
+                                DisplaySuccess($"Expense of {expense.ToString("C")} successfully deducted");
                             }                            
                             break;
                         }                            
@@ -106,12 +108,12 @@ namespace Budget
             do
             {
                 string response = ReadString(true);
-                switch (response.ToUpper())
-                {
-                    case "Y": return true;
-                    case "N": return false;
-                    default: DisplayError("Please respond with Y or N"); break;
-                }
+                if (String.Compare(response, "Y", StringComparison.CurrentCultureIgnoreCase) == 0)
+                    return true;
+                else if (String.Compare(response, "N", StringComparison.CurrentCultureIgnoreCase) == 0)
+                    return false;
+                else
+                    DisplayError("Please respond with Y or N");
             } while (true);            
         }
 
@@ -148,15 +150,17 @@ namespace Budget
         private static void DisplayError ( string message )
         {
             Console.BackgroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
+            Console.Write(message);
             Console.ResetColor();
+            Console.Write("\n");
         }
 
         private static void DisplaySuccess ( string message )
         {
             Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
+            Console.Write(message);
             Console.ResetColor();
+            Console.Write("\n");
         }
 
         private static string ReadString ( bool required )
@@ -186,7 +190,7 @@ namespace Budget
                     if (result >= minValue)
                         return result;
                     else
-                        DisplayError("Starting balance must be at least " + minValue);
+                        DisplayError($"Starting balance must be at least {minValue}");
                 }
                 DisplayError("Starting balance must be a monetary value");
             } while (true);
