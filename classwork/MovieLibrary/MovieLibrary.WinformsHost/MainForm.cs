@@ -32,9 +32,11 @@ namespace MovieLibrary.WinformsHost
 
             // member access operator ::= E . M
             movie.Name = "Jaws";
+            movie.Description = "Shark movie";
             //var str = movie.description;
 
             toolStripMenuItem5.Click += OnMovieAdd;
+            toolStripMenuItem7.Click += OnMovieDelete;
 
         }
 
@@ -42,9 +44,31 @@ namespace MovieLibrary.WinformsHost
         {
             var form = new MovieForm();
 
-            form.ShowDialog();
+            // Show Dialog - modal ::= use must interact with child form, cannot access parent
+            // Show - modeless ::= multiple window open and accessible at same time
+            var result = form.ShowDialog(); // Blocks until form is dismissed
+
+            if (result == DialogResult.Cancel)
+                return;
+
+            // After form is gone
+            // TODO: Save movie
+            MessageBox.Show("Save successful");
         }
 
+        private void OnMovieDelete (object sender, EventArgs e )
+        {
+            // TODO: Verify movie exists
+
+            // DialogResult - the button the user clicked
+            switch (MessageBox.Show(this, "Are you sure you want to delete?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                case DialogResult.Yes: break;
+                case DialogResult.No: return;
+            };
+
+            // TODO: Delete movie
+        }
     }
 }
 
