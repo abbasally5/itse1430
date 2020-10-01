@@ -35,10 +35,16 @@ namespace MovieLibrary.WinformsHost
             movie.Description = "Shark movie";
             //var str = movie.description;
 
+            // Hooks up an event handler to an event
+            // Event += method
+            // Can have multiple methods respond to an event
+            // Event -= method
             toolStripMenuItem5.Click += OnMovieAdd;
             toolStripMenuItem7.Click += OnMovieDelete;
 
         }
+
+        // Event - a notification to interested parties that something has happened
 
         private void OnMovieAdd ( object sender, EventArgs e )
         {

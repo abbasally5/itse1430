@@ -27,16 +27,126 @@ namespace MovieLibrary
         // Data - data to store
 
         // Fields - where the data is stored
+        //  Should always be private
+        //  Named using camel case and start with underscore
         //string name;
         // Fields work identically to variables
         // Named as nouns, no abbreviations and no generic names
-        public string Name = "";
 
-        public string Description = "";
-        public string Rating;
-        public int RunLength;// = 0;
-        public bool IsClassic; // = false;
-        public int ReleaseYear = 1900;
+        // Only time public fields allowed - read only data
+        // Constants
+        //  [access] const T identifier = E;
+        //      1. Must be a primitive type
+        //      2. Must have an initializer expression
+        //      3. Must recompile all code if value changed
+        public const int MaximumNameLength = 50;
+
+        // Read Only
+        // [access] readonly T identifier;
+        //      1. Any type
+        //      2. Must be initialized once either in initializer expression or at instance creation
+        //      3. Allowed to have different "readonly" values for each instance
+        //      4. Is not baked into source code
+        public readonly int MaximumDescriptionLength = 200;
+
+        // Not a field. because:
+        //  1. Can not write 
+        //  2. Calculated
+        //public int Age;
+
+        // Not a method either, because:
+        // 1. Get age is Not functinality, is data
+        // 2. Complex syntax compared to fields
+        // 3. Get/Set is in name
+        //public int GetAge () { }
+        public int Age
+        {
+            // Read only property
+            // Calculated property
+            get { return DateTime.Now.Year - ReleaseYear; }
+            //set {  }
+        }
+
+        // Mixed accessibility - using a different access on either getter or setter
+        //  1. Only 1 method can have access modifier
+        //  2. Always more restrictive
+        public int Id { get; private set; } // Public read, private write
+
+        // Properties - Methods that have field like syntax
+        //  full-property ::= [access] T identifier { getter setter }
+        //  getter ::= get { S* }
+        //  setter ::= set { S* }
+        //  auto-property ::= [access] T identifier { get; set; }
+        // Properties returning arrays or strings should not return null
+        public string Name
+        {
+            // getter: T get_Name ()
+            get 
+            {
+                // Coalesce - scanning a series of expression looking for nul-NULL
+                //     E1 ?? E2
+                //        if E1 is not null the nreturn E1
+                //        else return E2
+                
+                // if (_name == null)
+                //      return "";
+
+                //return _name;
+                return _name ?? "";
+            }
+
+            // setter: void set_Name ( T value )
+            set 
+            {
+                _name = value;
+            }
+        }
+        private string _name = "";
+
+        /// <summary>Gets or sets the movie description </summary>
+        public string Description
+        {
+            get { return _description ?? ""; }
+            set { _description = value;  }
+        }
+        private string _description = "";
+
+        public string Rating
+        {
+            get { return _rating ?? ""; }
+            set { _rating = value; }
+        }
+        private string _rating;
+
+        /// <summary>Gets or sets the run length in minutes.</summary>
+        public int RunLength { get; set; }
+        //public int RunLength
+        //{
+        //    get { return _runLength; }
+        //    set { _runLength = value; }
+        //}
+        //private int _runLength;// = 0;
+
+
+        /// <summary>Gets or sets the release year.</summary>
+        /// <value>Default value is 1900.</value>
+        public int ReleaseYear { get; set; } = 1900;
+        //public int ReleaseYear
+        //{
+        //    get { return _releaseYear; }
+        //    set { _releaseYear = value; }
+        //}
+        //private int _releaseYear = 1900;
+
+
+        public bool IsClassic { get; set; }
+        //public bool IsClassic
+        //{
+        //    get { return _isClassic; }
+        //    set { _isClassic = value; }
+        //}
+        //private bool _isClassic; // = false;
+
 
         // Functionality - functions you want to expose
 
