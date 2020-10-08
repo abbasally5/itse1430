@@ -61,6 +61,9 @@ namespace MovieLibrary.WinformsHost
                 _txtRunLength.Text = Movie.RunLength.ToString();
                 _txtReleaseYear.Text = Movie.ReleaseYear.ToString();
             };
+
+            // Go ahead and show validation errors
+            ValidateChildren();
         }
 
         // Method - function inside a class
@@ -74,6 +77,12 @@ namespace MovieLibrary.WinformsHost
         //      void identifier ( object sender, EventArgs e )
         private void OnSave ( object sender, EventArgs e )
         {
+            // Force validation of all controls
+            if (!ValidateChildren())
+            {
+                DialogResult = DialogResult.None;
+                return;
+            }
             // I want the button that was clicked
             // Type casting
             // WRONG: var button = (Button)sender; // C-style cast - crashes if wrong
@@ -120,6 +129,61 @@ namespace MovieLibrary.WinformsHost
                 return result;
 
             return -1;
+        }
+
+        private void OnValidateName ( object sender, CancelEventArgs e )
+        {
+            var control = sender as TextBox;
+
+            // Name is required
+            if (String.IsNullOrEmpty(control.Text))
+            {
+                // Set error using ErrorProvider
+                _errors.SetError(control, "Name is required");
+                e.Cancel = true;    // Not validate
+            } else
+            {
+                // Clear error from provider
+                _errors.SetError(control, "");
+            }
+        }
+
+        private void OnValidateRunLength ( object sender, CancelEventArgs e )
+        {
+            var control = sender as TextBox;
+
+            var value = ReadAsInt32(control);
+
+            // Run length >= 0
+            if (value < 0)
+            {
+                // Set error using ErrorProvider
+                _errors.SetError(control, "Run length must be >= 0");
+                e.Cancel = true;    // Not validate
+            } else
+            {
+                // Clear error from provider
+                _errors.SetError(control, "");
+            }
+        }
+
+        private void OnValidateReleaseYear ( object sender, CancelEventArgs e )
+        {
+            var control = sender as TextBox;
+
+            var value = ReadAsInt32(control);
+
+            // Run length >= 0
+            if (value < 1900)
+            {
+                // Set error using ErrorProvider
+                _errors.SetError(control, "Release year must be >= 1900");
+                e.Cancel = true;    // Not validate
+            } else
+            {
+                // Clear error from provider
+                _errors.SetError(control, "");
+            }
         }
     }
 }

@@ -39,10 +39,18 @@ namespace MovieLibrary.WinformsHost
             // Event += method
             // Can have multiple methods respond to an event
             // Event -= method
-            toolStripMenuItem5.Click += OnMovieAdd;
-            toolStripMenuItem6.Click += OnMovieEdit;
-            toolStripMenuItem7.Click += OnMovieDelete;
+            _miMovieAdd.Click += OnMovieAdd;
+            _miMovieEdit.Click += OnMovieEdit;
+            _miMovieDelete.Click += OnMovieDelete;
+            _miHelpAbout.Click += OnHelpAbout;
 
+        }
+
+        private void OnHelpAbout ( object sender, EventArgs e )
+        {
+            var about = new AboutBox();
+
+            about.ShowDialog(this);
         }
 
         // Event - a notification to interested parties that something has happened
