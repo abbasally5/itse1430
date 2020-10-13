@@ -184,6 +184,11 @@ namespace MovieLibrary
             // Safe pattern - when you create a function, you should make sure 
             // - assume inputs are invalid
         }
+
+        public override string ToString ()
+        {
+            return Name;
+        }
     }
 
     // Accessibility = the visibility of an identifier to other code, compile time only, determines who can see what at compilation

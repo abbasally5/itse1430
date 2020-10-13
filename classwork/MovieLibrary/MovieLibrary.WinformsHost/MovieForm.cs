@@ -131,6 +131,73 @@ namespace MovieLibrary.WinformsHost
             return -1;
         }
 
+        private void PlayWithObjects( object value )
+        {
+            // Common Type System (CTS) - there is 1 base type from which all other types derive
+            //  System.Object -> object
+            //      string ToString() ::= Converts a value to a string
+            //      bool Equals ( object ) ::= Determines if the current instance equals another value
+            //      int GethashCode () ::= Returns an integral value representing the object
+            var str = 10.ToString(); // "10"
+            var form = new Form();
+            form.ToString(); // System.Windows.Forms.Form
+
+            // Type checking or casting
+            //4 ways
+            // 1. C-style casy ::= (T)E
+            //      Runtime attempts to convert value to T and if successful returns value as T else crashes
+            //      Must be compile validated
+            string stringValue = (string)value; // Value type must be base type of cast type
+
+            // 2. as-operator ::= E as T
+            // preferred approach historically
+            //      Runtime attempts to convert value to T and if successful retuns value as T else returns null
+            stringValue = value as string;
+            if (stringValue != null)
+            { /* dealing with string */ }
+
+            // 3. is-operator ::= E is T
+            //      Runtime verifies value is of given T and returns true if successful or false otherwise
+            var isString = value is string;   // true
+            if (isString)
+            {
+                stringValue = (string)value;
+            }
+            // ^ this code would actually be checking type twice at runtime
+
+            // 4. pattern-matching ::= E is T identifier
+            //      Runtime attempts to convert E to T and if successful stores in identifier else stores default(T)
+            if (value is string sValue) 
+            {
+                // equivalent to 
+                //string svalue = value as string
+                //if (sValue != null)
+            }
+
+            // Dealing with null
+            //      1. Let it fail - instance.ToString() // errors if null
+            //      2. null coalescing-operator ::= E1 ?? E2
+            //          if E1 is not null return E1 else return E2
+            stringValue = stringValue ?? "";
+
+            //      3. null-conditional-operator ::= E?.M
+            //          E is an instance, M is any member; if E is not null, then call M else skip it
+            //          .ToString() -> string
+            //          ?.toString() -> string | null
+            stringValue = stringValue?.ToString() ?? "";
+            // equivalent to
+            // if (stringValue != null)
+            //      if (temp != null) return ""
+            //  return ""
+
+            //      4. null reference types
+            //          c# is trying to get rid of the need to use null at all
+
+            //int x - null;
+            string x = null;
+
+        }
+
         private void OnValidateName ( object sender, CancelEventArgs e )
         {
             var control = sender as TextBox;
