@@ -17,11 +17,19 @@ namespace CharacterCreator.Winforms
             InitializeComponent();
 
             _miFileExit.Click += OnFileExit;
+            _miHelpAbout.Click += OnHelpAbout;
         }
 
         private void OnFileExit ( object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void OnHelpAbout ( object sender, EventArgs e )
+        {
+            var about = new AboutBox();
+
+            about.ShowDialog(this);
         }
     }
 }

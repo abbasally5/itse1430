@@ -31,13 +31,16 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this._miFile = new System.Windows.Forms.ToolStripMenuItem();
             this._miFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            this._miHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this._miHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._miFile});
+            this._miFile,
+            this._miHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(284, 24);
@@ -58,6 +61,21 @@
             this._miFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this._miFileExit.Size = new System.Drawing.Size(135, 22);
             this._miFileExit.Text = "E&xit";
+            // 
+            // _miHelp
+            // 
+            this._miHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._miHelpAbout});
+            this._miHelp.Name = "_miHelp";
+            this._miHelp.Size = new System.Drawing.Size(44, 20);
+            this._miHelp.Text = "&Help";
+            // 
+            // _miHelpAbout
+            // 
+            this._miHelpAbout.Name = "_miHelpAbout";
+            this._miHelpAbout.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this._miHelpAbout.Size = new System.Drawing.Size(126, 22);
+            this._miHelpAbout.Text = "&About";
             // 
             // MainForm
             // 
@@ -82,6 +100,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem _miFile;
         private System.Windows.Forms.ToolStripMenuItem _miFileExit;
+        private System.Windows.Forms.ToolStripMenuItem _miHelp;
+        private System.Windows.Forms.ToolStripMenuItem _miHelpAbout;
     }
 }
 
