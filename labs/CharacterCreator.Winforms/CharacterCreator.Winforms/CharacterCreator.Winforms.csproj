@@ -9,4 +9,8 @@
     <Company>ITSE 1430 Fall 2020</Company>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CharacterCreator\CharacterCreator.csproj" />
+  </ItemGroup>
+
 </Project>
