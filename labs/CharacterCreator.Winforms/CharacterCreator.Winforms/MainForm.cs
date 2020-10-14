@@ -15,7 +15,13 @@ namespace CharacterCreator.Winforms
         public MainForm()
         {
             InitializeComponent();
+
+            _miFileExit.Click += OnFileExit;
         }
 
+        private void OnFileExit ( object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

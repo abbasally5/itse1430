@@ -30,15 +30,14 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this._miFile = new System.Windows.Forms.ToolStripMenuItem();
-            this._miExit = new System.Windows.Forms.ToolStripMenuItem();
+            this._miFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._miFile,
-            this._miExit});
+            this._miFile});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(284, 24);
@@ -47,15 +46,18 @@
             // 
             // _miFile
             // 
+            this._miFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._miFileExit});
             this._miFile.Name = "_miFile";
             this._miFile.Size = new System.Drawing.Size(37, 20);
             this._miFile.Text = "&File";
             // 
-            // _miExit
+            // _miFileExit
             // 
-            this._miExit.Name = "_miExit";
-            this._miExit.Size = new System.Drawing.Size(38, 20);
-            this._miExit.Text = "&Exit";
+            this._miFileExit.Name = "_miFileExit";
+            this._miFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this._miFileExit.Size = new System.Drawing.Size(135, 22);
+            this._miFileExit.Text = "E&xit";
             // 
             // MainForm
             // 
@@ -79,7 +81,7 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem _miFile;
-        private System.Windows.Forms.ToolStripMenuItem _miExit;
+        private System.Windows.Forms.ToolStripMenuItem _miFileExit;
     }
 }
 
