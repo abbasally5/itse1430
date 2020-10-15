@@ -7,15 +7,6 @@ namespace CharacterCreator
         
     public class Character
     {
-        /// <summary>The number of attributes that will be stored for each character</summary>
-        private const int NumAttributes = 6;
-
-        /// <summary>The minimum Attribute level a character can have</summary>
-        private const int MinAttributeLevel = 1;
-
-        /// <summary>The maximum Attribute level a character can have</summary>
-        private const int MaxAttributeLevel = 100;
-
         /// <summary>
         /// Makes the Attributes array easier to work with by using the attribute name rather than the attribute index
         /// </summary> 
@@ -28,6 +19,16 @@ namespace CharacterCreator
             Charisma,
             ForceAbility
         }
+
+        /// <summary>The number of attributes that will be stored for each character</summary>
+        private const int NumAttributes = 6;
+        //private readonly int NumAttributes = Enum.GetValues(typeof(Attribute)).Length;
+
+        /// <summary>The minimum Attribute level a character can have</summary>
+        private const int MinAttributeLevel = 1;
+
+        /// <summary>The maximum Attribute level a character can have</summary>
+        private const int MaxAttributeLevel = 100;
 
         /// <summary>
         /// Gets or sets the character name
