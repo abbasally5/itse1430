@@ -23,6 +23,7 @@ namespace CharacterCreator.Winforms
             {
                 attributeControl.ValueChanged += UpdateRemainingPoints;
                 attributeControl.Validating += OnValidateAttribute;
+                attributeControl.Value = 1;
             }
         }
 
@@ -38,10 +39,45 @@ namespace CharacterCreator.Winforms
 
         private void UpdateRemainingPoints ( object sender, EventArgs e )
         {
-            RemainingPoints();
+            var control = sender as NumericUpDown;
+
+            //if (!IsAttributeValid(control.Value))
+            //{
+            //    _errors.SetError(control, "Attribute Level must be an integer");
+            //    return;
+            //}
+
+            //var pointDiff = RemainingPoints();
+            //if (error)
+            //_errors.SetError(control, "Total Attribute Levels")
+            var diff = RemainingPoints();
+            switch (diff)
+            {
+                case 1:
+                {
+                    control.Value -= control.Increment;
+                    _errors.SetError(control, $"Total Attribute Levels cannot exceed {StartingAttributePoints}");
+                    break;
+                }
+                case -1:
+                {
+                    control.Value += control.Increment;
+                    _errors.SetError(control, "Attribute Levels cannot go below 0");
+                    break;
+                }
+                default: _errors.SetError(control, ""); break;
+
+            };
+
         }
 
-        private void RemainingPoints ()
+        //private bool IsAttributeValid ( decimal numUpDownValue )
+        //{
+        //    return numUpDownValue % 1 == 0;
+        //    //return numUpDownValue % 1 == 0 && numUpDownValue >= 1 && ;
+        //}
+
+        private decimal RemainingPoints ()
         {
             decimal remainingPoints = StartingAttributePoints;
  
@@ -50,7 +86,14 @@ namespace CharacterCreator.Winforms
                 remainingPoints -= attributeControl.Value;
             }
 
+            if (remainingPoints < 0)
+                return 1;
+            else if (remainingPoints > StartingAttributePoints)
+                return -1;
+
             _lblRemainingPoints.Text = remainingPoints.ToString();
+            return 0;
+
 
         }
 

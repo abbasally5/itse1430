@@ -7,6 +7,14 @@ namespace CharacterCreator
 
     public class Character
     {
+
+        //public Character ()
+        //{
+        //    for (var i = 0; i < Attributes.Length; ++i)
+        //    {
+        //        Attributes[i] = 1;
+        //    }
+        //}
         /// <summary>
         /// Makes the Attributes array easier to work with by using the attribute name rather than the attribute index
         /// Essentially makes the Attributes array into a faux dictionary
@@ -87,7 +95,7 @@ namespace CharacterCreator
         /// <value>
         /// The possible attributes are listed under the Attribute enum
         /// </value>
-        public int[] Attributes = new int[NumAttributes];
+        public int[] Attributes { get; set; } = new int[NumAttributes];
 
         /// <summary>
         /// Gets or sets the character description

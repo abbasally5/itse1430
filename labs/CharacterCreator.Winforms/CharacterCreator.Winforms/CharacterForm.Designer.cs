@@ -221,6 +221,7 @@
             // 
             this._numUpDownStrength.Location = new System.Drawing.Point(172, 147);
             this._numUpDownStrength.Name = "_numUpDownStrength";
+            this._numUpDownStrength.ReadOnly = true;
             this._numUpDownStrength.Size = new System.Drawing.Size(54, 23);
             this._numUpDownStrength.TabIndex = 3;
             // 
@@ -228,6 +229,7 @@
             // 
             this._numUpDownAgility.Location = new System.Drawing.Point(172, 176);
             this._numUpDownAgility.Name = "_numUpDownAgility";
+            this._numUpDownAgility.ReadOnly = true;
             this._numUpDownAgility.Size = new System.Drawing.Size(54, 23);
             this._numUpDownAgility.TabIndex = 5;
             // 
@@ -235,6 +237,7 @@
             // 
             this._numUpDownCharisma.Location = new System.Drawing.Point(172, 205);
             this._numUpDownCharisma.Name = "_numUpDownCharisma";
+            this._numUpDownCharisma.ReadOnly = true;
             this._numUpDownCharisma.Size = new System.Drawing.Size(54, 23);
             this._numUpDownCharisma.TabIndex = 7;
             // 
@@ -242,6 +245,7 @@
             // 
             this._numUpDownIntelligence.Location = new System.Drawing.Point(319, 147);
             this._numUpDownIntelligence.Name = "_numUpDownIntelligence";
+            this._numUpDownIntelligence.ReadOnly = true;
             this._numUpDownIntelligence.Size = new System.Drawing.Size(54, 23);
             this._numUpDownIntelligence.TabIndex = 4;
             // 
@@ -249,6 +253,7 @@
             // 
             this._numUpDownConstitution.Location = new System.Drawing.Point(319, 176);
             this._numUpDownConstitution.Name = "_numUpDownConstitution";
+            this._numUpDownConstitution.ReadOnly = true;
             this._numUpDownConstitution.Size = new System.Drawing.Size(54, 23);
             this._numUpDownConstitution.TabIndex = 6;
             // 
@@ -261,6 +266,7 @@
             // 
             this._numUpDownForceAbility.Location = new System.Drawing.Point(319, 207);
             this._numUpDownForceAbility.Name = "_numUpDownForceAbility";
+            this._numUpDownForceAbility.ReadOnly = true;
             this._numUpDownForceAbility.Size = new System.Drawing.Size(54, 23);
             this._numUpDownForceAbility.TabIndex = 8;
             // 
