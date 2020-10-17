@@ -35,6 +35,8 @@ namespace CharacterCreator.Winforms
 
         private Character character;
 
+        private Character[] characterList = new Character[1];
+
         private void OnFileExit ( object sender, EventArgs e)
         {
             Close();
@@ -55,8 +57,15 @@ namespace CharacterCreator.Winforms
             if (result == DialogResult.Cancel)
                 return;
 
-            //TODO: Add Movie
             character = form.Character;
+            characterList[0] = character;
+            RefreshUI();
+        }
+
+        private void RefreshUI ()
+        {
+            _lstCharacters.DataSource = null;
+            _lstCharacters.DataSource = characterList;
         }
     }
 }

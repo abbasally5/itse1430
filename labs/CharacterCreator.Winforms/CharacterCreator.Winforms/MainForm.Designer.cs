@@ -35,6 +35,7 @@
             this._miCharacterNew = new System.Windows.Forms.ToolStripMenuItem();
             this._miHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._miHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this._lstCharacters = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,11 +96,22 @@
             this._miHelpAbout.Size = new System.Drawing.Size(126, 22);
             this._miHelpAbout.Text = "&About";
             // 
+            // _lstCharacters
+            // 
+            this._lstCharacters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._lstCharacters.FormattingEnabled = true;
+            this._lstCharacters.ItemHeight = 15;
+            this._lstCharacters.Location = new System.Drawing.Point(0, 24);
+            this._lstCharacters.Name = "_lstCharacters";
+            this._lstCharacters.Size = new System.Drawing.Size(284, 387);
+            this._lstCharacters.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 411);
+            this.Controls.Add(this._lstCharacters);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(260, 420);
@@ -122,6 +134,7 @@
         private System.Windows.Forms.ToolStripMenuItem _miHelpAbout;
         private System.Windows.Forms.ToolStripMenuItem _miCharacter;
         private System.Windows.Forms.ToolStripMenuItem _miCharacterNew;
+        private System.Windows.Forms.ListBox _lstCharacters;
     }
 }
 
