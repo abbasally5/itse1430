@@ -31,11 +31,17 @@ namespace CharacterCreator.Winforms
             _miFileExit.Click += OnFileExit;
             _miHelpAbout.Click += OnHelpAbout;
             _miCharacterNew.Click += OnCharacterNew;
+            _miCharacterEdit.Click += OnCharacterEdit;
         }
 
         private Character character;
 
         private Character[] characterList = new Character[1];
+
+        private Character GetSelectedCharacter ()
+        {
+            return _lstCharacters.SelectedItem as Character;
+        }
 
         private void OnFileExit ( object sender, EventArgs e)
         {
@@ -60,6 +66,23 @@ namespace CharacterCreator.Winforms
             character = form.Character;
             characterList[0] = character;
             RefreshUI();
+        }
+
+        private void OnCharacterEdit ( object sender, EventArgs e)
+        {
+            var character = GetSelectedCharacter();
+            if (character == null)
+                return;
+
+            var form = new CharacterForm(character, "Edit Character");
+
+            var result = form.ShowDialog();
+            if (result == DialogResult.Cancel)
+                return;
+
+            characterList[0] = form.Character;
+            RefreshUI();
+
         }
 
         private void RefreshUI ()

@@ -26,6 +26,12 @@ namespace CharacterCreator.Winforms
             }
         }
 
+        public CharacterForm (Character character, string title) : this()
+        {
+            Character = character;
+            Text = title ?? "Create New Character";
+        }
+
         public Character Character { get; set; }
 
         private readonly NumericUpDown[] attributeControlList;
@@ -52,12 +58,15 @@ namespace CharacterCreator.Winforms
         {
             base.OnLoad(e);
 
+            _comboProfession.Items.AddRange(Character.ProfessionArray);
+            _comboRace.Items.AddRange(Character.RaceArray);
+
             if (Character != null)
             {
                 // Setup for just updating Character Form
                 _txtName.Text = Character.Name;
-                _comboProfession.SelectedItem = Character.Profession;
-                _comboRace.SelectedItem = Character.Race;
+                _comboProfession.Text = Character.Profession;
+                _comboRace.Text = Character.Race;
 
                 _numUpDownAgility.Value = Character.Attributes[(int)Character.Attribute.Agility];
                 _numUpDownCharisma.Value = Character.Attributes[(int)Character.Attribute.Charisma];
@@ -67,13 +76,10 @@ namespace CharacterCreator.Winforms
                 _numUpDownStrength.Value = Character.Attributes[(int)Character.Attribute.Strength];
 
                 _txtDescription.Text = Character.Description;
-
             }
 
             // Setup for adding and updating Character Form
             RemainingPoints();
-            _comboProfession.Items.AddRange(Character.ProfessionArray);
-            _comboRace.Items.AddRange(Character.RaceArray);
 
             ValidateChildren();
         }
