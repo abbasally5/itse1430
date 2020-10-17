@@ -13,17 +13,6 @@ namespace CharacterCreator.Winforms
     public partial class MainForm : Form
     {
 
-        //private const int StartingAttributePoints = 30;
-
-        //private int RemainingPoints ( Character _character )
-        //{
-        //    int remaingingPoints = StartingAttributePoints;
-        //    foreach (var attributeCount in _character.Attributes)
-        //        remaingingPoints -= attributeCount;
-
-        //    return remaingingPoints;
-        //}
-
         public MainForm()
         {
             InitializeComponent();
@@ -35,7 +24,7 @@ namespace CharacterCreator.Winforms
             _miCharacterDelete.Click += OnCharacterDelete;
         }
 
-        private Character character;
+        private Character _character;
 
         private Character[] characterList = new Character[1];
 
@@ -69,8 +58,8 @@ namespace CharacterCreator.Winforms
             if (result == DialogResult.Cancel)
                 return;
 
-            character = form.Character;
-            characterList[0] = character;
+            _character = form.Character;
+            characterList[0] = _character;
             RefreshUI();
         }
 

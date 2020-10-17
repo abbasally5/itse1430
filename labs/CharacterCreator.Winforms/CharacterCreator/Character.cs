@@ -29,11 +29,6 @@ namespace CharacterCreator
             ForceAbility
         }
 
-        //public int this[Attribute attr]
-        //{
-        //    get { return Attributes[(int)attr]; }
-        //}
-
         public int GetAttributeIndex ( Attribute _attr)
         {
             return (int)_attr;
@@ -41,13 +36,12 @@ namespace CharacterCreator
 
         /// <summary>The number of attributes that will be stored for each character</summary>
         private const int NumAttributes = 6;
-        //private readonly int NumAttributes = Enum.GetValues(typeof(Attribute)).Length;
 
         /// <summary>The minimum Attribute level a character can have</summary>
-        private const int MinAttributeLevel = 1;
+        public const int MinAttributeLevel = 1;
 
         /// <summary>The maximum Attribute level a character can have</summary>
-        private const int MaxAttributeLevel = 100;
+        public const int MaxAttributeLevel = 100;
 
         /// <summary>
         /// Gets or sets the character name
@@ -87,7 +81,7 @@ namespace CharacterCreator
         /// <summary>
         /// The possible races include Human, Wookie, Bothan, Mon Calimari, Genosion, Kaminoan, Gungan 
         /// </summary>
-        public static string[] RaceArray = { "Human", "Wookie", "Bothan", "Mon Calimari", "Genosian", "Kaminoan", "Gungan" }; 
+        public static string[] RaceArray = { "Human", "Wookie", "Bothan", "Mon Calimari", "Genosian", "Kaminoan", "Gungan", "Droid" }; 
 
         /// <summary>
         /// Gets or sets the character attributes

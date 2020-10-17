@@ -16,14 +16,21 @@ namespace CharacterCreator.Winforms
         {
             InitializeComponent();
 
+            _comboProfession.Items.AddRange(Character.ProfessionArray);
+            _comboRace.Items.AddRange(Character.RaceArray);
+
             attributeControlList = new NumericUpDown[]{_numUpDownAgility, _numUpDownCharisma, _numUpDownConstitution,
                                                        _numUpDownForceAbility, _numUpDownIntelligence, _numUpDownStrength};
 
+            // Apply the same control properties to all the attribute controls
             foreach (var attributeControl in attributeControlList)
-            {
+            {       
                 attributeControl.ValueChanged += UpdateRemainingPoints;
                 attributeControl.Validating += OnValidateAttribute;
-                attributeControl.Value = 1;
+                attributeControl.Value = Character.MinAttributeLevel;
+                attributeControl.Minimum = Character.MinAttributeLevel;
+                attributeControl.Maximum = Character.MaxAttributeLevel;
+                attributeControl.ReadOnly = true;
             }
         }
 
@@ -41,15 +48,6 @@ namespace CharacterCreator.Winforms
         {
             var control = sender as NumericUpDown;
 
-            //if (!IsAttributeValid(control.Value))
-            //{
-            //    _errors.SetError(control, "Attribute Level must be an integer");
-            //    return;
-            //}
-
-            //var pointDiff = RemainingPoints();
-            //if (error)
-            //_errors.SetError(control, "Total Attribute Levels")
             var diff = RemainingPoints();
             switch (diff)
             {
@@ -70,12 +68,6 @@ namespace CharacterCreator.Winforms
             };
 
         }
-
-        //private bool IsAttributeValid ( decimal numUpDownValue )
-        //{
-        //    return numUpDownValue % 1 == 0;
-        //    //return numUpDownValue % 1 == 0 && numUpDownValue >= 1 && ;
-        //}
 
         private decimal RemainingPoints ()
         {
@@ -101,9 +93,6 @@ namespace CharacterCreator.Winforms
         {
             base.OnLoad(e);
 
-            _comboProfession.Items.AddRange(Character.ProfessionArray);
-            _comboRace.Items.AddRange(Character.RaceArray);
-
             if (Character != null)
             {
                 // Setup for just updating Character Form
@@ -123,7 +112,6 @@ namespace CharacterCreator.Winforms
 
             // Setup for adding and updating Character Form
             RemainingPoints();
-
             ValidateChildren();
         }
 
