@@ -34,6 +34,8 @@
             this._miCharacter = new System.Windows.Forms.ToolStripMenuItem();
             this._miCharacterNew = new System.Windows.Forms.ToolStripMenuItem();
             this._miCharacterEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this._miCharacterDelete = new System.Windows.Forms.ToolStripMenuItem();
             this._miHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._miHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this._lstCharacters = new System.Windows.Forms.ListBox();
@@ -71,7 +73,9 @@
             // 
             this._miCharacter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._miCharacterNew,
-            this._miCharacterEdit});
+            this._miCharacterEdit,
+            this.toolStripSeparator1,
+            this._miCharacterDelete});
             this._miCharacter.Name = "_miCharacter";
             this._miCharacter.Size = new System.Drawing.Size(70, 20);
             this._miCharacter.Text = "&Character";
@@ -89,6 +93,18 @@
             this._miCharacterEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this._miCharacterEdit.Size = new System.Drawing.Size(141, 22);
             this._miCharacterEdit.Text = "&Edit";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(138, 6);
+            // 
+            // _miCharacterDelete
+            // 
+            this._miCharacterDelete.Name = "_miCharacterDelete";
+            this._miCharacterDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this._miCharacterDelete.Size = new System.Drawing.Size(141, 22);
+            this._miCharacterDelete.Text = "&Delete";
             // 
             // _miHelp
             // 
@@ -145,6 +161,8 @@
         private System.Windows.Forms.ToolStripMenuItem _miCharacterNew;
         private System.Windows.Forms.ListBox _lstCharacters;
         private System.Windows.Forms.ToolStripMenuItem _miCharacterEdit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem _miCharacterDelete;
     }
 }
 

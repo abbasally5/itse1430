@@ -32,6 +32,7 @@ namespace CharacterCreator.Winforms
             _miHelpAbout.Click += OnHelpAbout;
             _miCharacterNew.Click += OnCharacterNew;
             _miCharacterEdit.Click += OnCharacterEdit;
+            _miCharacterDelete.Click += OnCharacterDelete;
         }
 
         private Character character;
@@ -41,6 +42,11 @@ namespace CharacterCreator.Winforms
         private Character GetSelectedCharacter ()
         {
             return _lstCharacters.SelectedItem as Character;
+        }
+
+        private int GetCharacterIndex ()
+        {
+            return _lstCharacters.SelectedIndex;
         }
 
         private void OnFileExit ( object sender, EventArgs e)
@@ -71,6 +77,7 @@ namespace CharacterCreator.Winforms
         private void OnCharacterEdit ( object sender, EventArgs e)
         {
             var character = GetSelectedCharacter();
+            var characterIndex = GetCharacterIndex();
             if (character == null)
                 return;
 
@@ -80,9 +87,26 @@ namespace CharacterCreator.Winforms
             if (result == DialogResult.Cancel)
                 return;
 
-            characterList[0] = form.Character;
+            characterList[characterIndex] = form.Character;
             RefreshUI();
 
+        }
+
+        private void OnCharacterDelete (object sender, EventArgs e)
+        {
+            var character = GetSelectedCharacter();
+            var characterIndex = GetCharacterIndex();
+            if (character == null)
+                return;
+
+            switch (MessageBox.Show(this, $"Are you sure you want to delete `{character.Name}`?", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                case DialogResult.Yes: break;
+                case DialogResult.No: return;
+            }
+
+            characterList[characterIndex] = null;
+            RefreshUI();
         }
 
         private void RefreshUI ()
