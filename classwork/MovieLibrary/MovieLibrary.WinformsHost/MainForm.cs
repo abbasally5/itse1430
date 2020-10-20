@@ -46,6 +46,13 @@ namespace MovieLibrary.WinformsHost
 
         }
 
+        protected override void OnLoad ( EventArgs e )
+        {
+            base.OnLoad(e);
+
+            RefreshUI();
+        }
+
         private void OnHelpAbout ( object sender, EventArgs e )
         {
             var about = new AboutBox();
