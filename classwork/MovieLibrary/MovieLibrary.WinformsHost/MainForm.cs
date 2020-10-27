@@ -1,4 +1,6 @@
 ﻿using System;       // DO NOT DELETE
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 // Hierarchical namespaces
@@ -69,7 +71,7 @@ namespace MovieLibrary.WinformsHost
         //private Movie[] _movies = new Movie[100];   // 0..99
         //private Movie[] _emptyMovies = new Movie[0];    // empty arrays and nulls to be equivalent so always use empty array instead of null
 
-        private MovieDatabase _movies = new MovieDatabase();
+        private IMovieDatabase _movies = new MovieDatabase();
 
         private void AddMovie ( Movie movie )
         {
@@ -150,11 +152,11 @@ namespace MovieLibrary.WinformsHost
 
         private void RefreshUI ()
         {
-            //_lstMovies.DisplayMember = nameof(Movie.Name); // "Name"
+            _lstMovies.DataSource = _movies.GetAll().ToArray();
 
-            _lstMovies.DataSource = null;   // have to set it to null b/c it only detects changes to DataSource
+            //_lstMovies.DataSource = null;   // have to set it to null b/c it only detects changes to DataSource
             //_lstMovies.DataSource = _movies;
-            _lstMovies.DataSource = _movies.GetAll();
+            //_lstMovies.DataSource = _movies.GetAll();
         }
 
         private void OnMovieAdd ( object sender, EventArgs e )

@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MovieLibrary
 {
-    public class MovieDatabase
+    // Abstract class required if any member is abstract
+    //  1. Cannot be instantiacted
+    //  2. Must be derived from
+    //  3. Derived class must implement all abstract members
+    public abstract class MovieDatabase : IMovieDatabase
     {
-        public MovieDatabase ()
+        protected MovieDatabase ()
         {
             // Collection initializer syntax
-            var items = new [] { // new Movie[]
+            var items = new[] { // new Movie[]
                 new Movie() {
                     Name = "Jaws",
                     ReleaseYear = 1977,
@@ -27,12 +32,12 @@ namespace MovieLibrary
                     Rating = "PG-13",
                 },
                 new Movie() {
-                Name = "Dune",
-                ReleaseYear = 1985,
-                RunLength = 220,
-                Description = "Based on book",
-                IsClassic = true,
-                Rating = "PG",
+                    Name = "Dune",
+                    ReleaseYear = 1985,
+                    RunLength = 220,
+                    Description = "Based on book",
+                    IsClassic = true,
+                    Rating = "PG",
                 }
             };
             foreach (var item in items)
@@ -89,57 +94,45 @@ namespace MovieLibrary
             //};
             //Add(movie, out error);
         }
-        // Array - T[]
-        //public Movie[] Items { get; set; }
 
         public Movie Add ( Movie movie, out string error )
         {
-            //TODO: Movie is valid
+            // TODO: Movie is not null
+
+            // Movie is valid
+            var results = new ObjectValidator().TryValidateFullObject(movie);
+            if (results.Count() > 0)
+            {
+                foreach (var result in results)
+                {
+                    error = result.ErrorMessage;
+                    return null;
+                };
+            };
+
             // Movie name is unique
-            error = "";
+            var existing = FindByName(movie.Name);
+            if (existing != null)
+            {
+                error = "Movie msut be unique";
+                return null;
+            };
 
-            var item = CloneMovie(movie);
+            error = null;
+            return AddCore(movie);
+        }
 
-            // Set a unique ID
-            item.Id = _id++;
+        protected abstract Movie AddCore ( Movie movie );
 
-            // Add movie to array
-            //_movies[index] = movie;     // Movie is a ref type thus movie and _movies[index] reference the same instance
-            _movies.Add(item);
+        protected virtual Movie FindByName ( string name )
+        {
+            foreach (var movie in GetAll())
+            {
+                if (String.Compare(movie.Name, name, true) == 0)
+                    return movie;
+            };
 
-            // Set ID on original object and return
-            movie.Id = item.Id;
-            return movie;
-
-            // Find first empty spot in array
-            // for ( EI; EC; EU ) S;
-            //      EI ::= initializer expression of loop variant (runs once before loop executes)
-            //      EC ::= conditional expression => boolean (executes before loop statement is run, aborts if condition is false)
-            //      EU ::= update expression (runs at end of current iteration)
-            // Length -> int (# of rows in the array)
-            //for (var index = 0; index < _movies.Length; ++index)
-            //for (var index = 0; index < _movies.Count; ++index)
-            //{
-            //    // Array element access ::= V[int]
-            //    //if (_movies[index] == null)
-            //    {
-            //        var item = CloneMovie(movie);
-
-            //        // Set a unique ID
-            //        item.Id = _id++;
-
-            //        // Add movie to array
-            //        //_movies[index] = movie;     // Movie is a ref type thus movie and _movies[index] reference the same instance
-            //        _movies.Add(item);
-
-            //        // Set ID on original object and return
-            //        movie.Id = item.Id;
-            //        return movie;
-            //    };
-            //}
-
-            //error = "No more room";
-            //return null;
+            return null;
         }
 
         public void Delete ( int id )
@@ -151,7 +144,7 @@ namespace MovieLibrary
             {
                 _movies.Remove(movie);
             };
-                    
+
             #region For Arrays
             //for (var index = 0; index < _movies.Length; ++index)
             //{
@@ -199,22 +192,34 @@ namespace MovieLibrary
             return "";
         }
 
-        public Movie[] GetAll ()
+        // Use IEnumerable<T> for readonly lists of items
+        // public Movie[] GetAll()
+        public IEnumerable<Movie> GetAll ()
         {
             // DONT DO THIS
             //  1. Expose underlying movie items
             //  2. Callers add/remove movies
             //return _movies;
 
-            //TODO: Determine how many movies we're storing
-            // For each one create a cloned copy
-            //return _movies;
-            var items = new Movie[_movies.Count];
-            var index = 0;
-            foreach (var movie in _movies)
-                items[index++] = CloneMovie(movie);
+            //var items = new Movie[_movies.Count];
+            //var index = 0;
 
-            return items;
+            // Foreach equivalent
+            // var enumerator = _movies.GetEnumerator();
+            // while (enumerator.Next(0)
+            // { 
+            //      var movie = enumerator.Current;
+            //      S* 
+            // }
+            
+            // iterator IEnumerable<T>
+            //  yield return T
+            // makes GetAll() into a reentrant function
+            foreach (var movie in _movies)  // relies on IEnumerator<T>
+                //items[index++] = CloneMovie(movie);
+                yield return CloneMovie(movie);
+
+            //return items;
         }
 
         public Movie Get ( int id )
@@ -241,31 +246,6 @@ namespace MovieLibrary
 
             return null;
         }
-
-        private Movie CloneMovie ( Movie movie )
-        {
-            var item = new Movie();
-            item.Id = movie.Id;
-
-            CopyMovie(item, movie);
-            
-            return item;
-        }
-
-        private void CopyMovie ( Movie target, Movie source )
-        {
-            target.Name = source.Name;
-            target.Rating = source.Rating;
-            target.ReleaseYear = source.ReleaseYear;
-            target.IsClassic = source.IsClassic;
-            target.Description = source.Description;
-        }
-
-        // Only store cloned copies of movies here!!
-        //private Movie[] _movies = new Movie[100];   // 0..99
-        private List<Movie> _movies = new List<Movie>();    // Generic list of Movies, use for fields
-        //private Collection<Movie> _temp;                    // Public read-writable lists
-        private int _id = 1;
 
         // Non-generic
         //      ArrayList - list of objects
