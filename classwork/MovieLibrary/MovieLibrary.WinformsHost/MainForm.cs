@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
+using MovieLibrary.Memory;
+
 // Hierarchical namespaces
 //namespace MovieLibrary
 //{
@@ -52,7 +54,18 @@ namespace MovieLibrary.WinformsHost
         {
             base.OnLoad(e);
 
-            RefreshUI();
+            int count = RefreshUI();
+            if (count == 0)
+            {
+                // Seed database if empty
+                if (MessageBox.Show(this, "No movies found. Do you want to add some example movies?", "Database Empty", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    var seed = new SeedMovieDatabase();
+                    seed.Seed(_movies);
+
+                    RefreshUI();
+                }
+            }
         }
 
         private void OnHelpAbout ( object sender, EventArgs e )
@@ -71,7 +84,7 @@ namespace MovieLibrary.WinformsHost
         //private Movie[] _movies = new Movie[100];   // 0..99
         //private Movie[] _emptyMovies = new Movie[0];    // empty arrays and nulls to be equivalent so always use empty array instead of null
 
-        private IMovieDatabase _movies = new MovieDatabase();
+        private IMovieDatabase _movies = new MemoryMovieDatabase();
 
         private void AddMovie ( Movie movie )
         {
@@ -150,9 +163,12 @@ namespace MovieLibrary.WinformsHost
             //_lstMovies.SelectedValue // also returns an object
         }
 
-        private void RefreshUI ()
+        private int RefreshUI ()
         {
-            _lstMovies.DataSource = _movies.GetAll().ToArray();
+            var items = _movies.GetAll().ToArray();
+            _lstMovies.DataSource = items;
+
+            return items.Length;
 
             //_lstMovies.DataSource = null;   // have to set it to null b/c it only detects changes to DataSource
             //_lstMovies.DataSource = _movies;
@@ -170,7 +186,8 @@ namespace MovieLibrary.WinformsHost
                 return;
 
             //Save movie
-            AddMovie(form.Movie);
+            //AddMovie(form.Movie);
+            AddMovie(null);
             //RefreshUI();
         }
 
