@@ -84,16 +84,16 @@ namespace MovieLibrary.WinformsHost
         //private Movie[] _movies = new Movie[100];   // 0..99
         //private Movie[] _emptyMovies = new Movie[0];    // empty arrays and nulls to be equivalent so always use empty array instead of null
 
-        private IMovieDatabase _movies = new MemoryMovieDatabase();
+        private IMovieDatabase _movies = new IO.FileMovieDatabase("movies.csv");
 
         private void AddMovie ( Movie movie )
         {
-            var newMovie = _movies.Add(movie, out var message);
-            if (newMovie == null)
-            {
-                MessageBox.Show(this, message, "Add Failed", MessageBoxButtons.OK);
-                return;
-            };
+            var newMovie = _movies.Add(movie);
+            //if (newMovie == null)
+            //{
+            //    MessageBox.Show(this, message, "Add Failed", MessageBoxButtons.OK);
+            //    return;
+            //};
 
             RefreshUI();
 
@@ -121,6 +121,7 @@ namespace MovieLibrary.WinformsHost
         private void DeleteMovie ( int id )
         {
             _movies.Delete(id);
+            RefreshUI();
             //for (var index = 0; index < _movies.Length; ++index)
             //{
             //    // Array element access ::= V[int]
@@ -135,12 +136,14 @@ namespace MovieLibrary.WinformsHost
 
         private void EditMovie (int id, Movie movie )
         {
-            var error = _movies.Update(id, movie);
-            if (!String.IsNullOrEmpty(error))
-            {
-                RefreshUI();
-                return;
-            }
+            _movies.Update(id, movie);
+            RefreshUI();
+            //var error = _movies.Update(id, movie);
+            //if (!String.IsNullOrEmpty(error))
+            //{
+            //    RefreshUI();
+            //    return;
+            //}
 
             //for (var index = 0; index < _movies.Length; ++index)
             //{
@@ -153,7 +156,7 @@ namespace MovieLibrary.WinformsHost
             //    };
             //}
 
-            MessageBox.Show(this, error, "Edit Movie", MessageBoxButtons.OK);
+            //MessageBox.Show(this, error, "Edit Movie", MessageBoxButtons.OK);
         }
 
         private Movie GetSelectedMovie ()
@@ -179,15 +182,42 @@ namespace MovieLibrary.WinformsHost
         {
             var form = new MovieForm();
 
-            // Show Dialog - modal ::= use must interact with child form, cannot access parent
-            // Show - modeless ::= multiple window open and accessible at same time
-            var result = form.ShowDialog(); // Blocks until form is dismissed
-            if (result == DialogResult.Cancel)
-                return;
+            do
+            {
+                // Show Dialog - modal ::= use must interact with child form, cannot access parent
+                // Show - modeless ::= multiple window open and accessible at same time
+                var result = form.ShowDialog(); // Blocks until form is dismissed
+                if (result == DialogResult.Cancel)
+                    return;
 
-            //Save movie
-            //AddMovie(form.Movie);
-            AddMovie(null);
+                // Handle errors
+                //  try-catch ::= try-block catch-block ;
+                //  try-block ::= try S
+                //  catch-block ::= catch S
+                //  catch-conditional-block ::= catch (T id) S
+
+                // Save movie
+                try
+                {
+                    AddMovie(form.Movie);
+                    //AddMovie(null);
+                    return;
+                } catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show(this, ex.Message, "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } catch (ArgumentException ex)
+                {
+                    MessageBox.Show(this, ex.Message, "Bad Argument", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } catch (Exception ex) // Equivalent to catch
+                {
+                    // Handle errors
+                    MessageBox.Show(this, "Failed", "Add Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw;
+                };
+            } while (true);
+
+           
+            
             //RefreshUI();
         }
 
@@ -209,9 +239,27 @@ namespace MovieLibrary.WinformsHost
             if (result == DialogResult.Cancel)
                 return;
 
-            // Update movie
-            EditMovie(movie.Id, form.Movie);
-            //RefreshUI();
+            try
+            {
+                // Update movie
+                EditMovie(movie.Id, form.Movie);
+                //RefreshUI();
+            } catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(this, ex.Message, "Invalid Operation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } catch (ArgumentException ex)
+            {
+                MessageBox.Show(this, ex.Message, "Bad Argument", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } catch (Exception ex)
+            {
+                // Handle errors
+                MessageBox.Show(this, ex.Message, "Edit Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Rethrow exception
+                throw;
+            };
+
+
         }
 
         private void OnMovieDelete (object sender, EventArgs e )
@@ -227,9 +275,16 @@ namespace MovieLibrary.WinformsHost
                 case DialogResult.No: return;
             };
 
-            // Delete movie
-            DeleteMovie(movie.Id);
-            RefreshUI();
+            try
+            {
+                // Delete movie
+                DeleteMovie(movie.Id);
+                //RefreshUI();
+            } catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+            
         }
     }
 }

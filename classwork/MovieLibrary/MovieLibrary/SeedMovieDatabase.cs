@@ -39,7 +39,7 @@ namespace MovieLibrary
 
             //TODO: Fix error handling
             foreach (var item in items)
-                database.Add(item, out var error);
+                database.Add(item);
 
             #region Unused code
             // Not needed here - clears all items from list

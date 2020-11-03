@@ -17,6 +17,7 @@ namespace MovieLibrary
 
         public void ValidateFullObject ( IValidatableObject value )
         {
+            var validationResults = new List<ValidationResult>();
             Validator.TryValidateObject(value, new ValidationContext(value), validationResults, true);
         }
     }

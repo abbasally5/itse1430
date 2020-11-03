@@ -51,15 +51,25 @@ namespace MovieLibrary
             //    throw new InvalidOperationException("Movie must be unique");
 
             // Throw expression ::= E ?? throw E
-            var existing = GetByName(movie.Name) ?? throw new InvalidOperationException("Movie must be unique");
+            var existing = GetByName(movie.Name);
+            if (existing != null)
+                throw new InvalidOperationException("Movie must be unique");
             //{
             //    error = "Movie msut be unique";
             //    return null;
             //};
 
             //error = null;
-            //TODO: Generalize errors
-            return AddCore(movie);
+            // Generalize errors
+            try
+            {
+                return AddCore(movie);
+            } catch (Exception e)
+            {
+                // Throwing a new exception
+                throw new InvalidOperationException("Add Failed", e);
+            }
+
         }
 
         protected abstract Movie AddCore ( Movie movie );
@@ -89,7 +99,15 @@ namespace MovieLibrary
             if (id < 0)
                 throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than zero");
 
-            DeleteCore(id);
+            // Generalize errors
+            try
+            {
+                DeleteCore(id);
+            } catch (Exception e)
+            {
+                // Throwing a new exception
+                throw new InvalidOperationException("Delete Failed", e);
+            }
 
             #region For Arrays
             //for (var index = 0; index < _movies.Length; ++index)
@@ -136,7 +154,15 @@ namespace MovieLibrary
 
             // updated movie is valid
             // updated movie name is unique
-            UpdateCore(id, movie);
+            // Generalize errors
+            try
+            {
+                UpdateCore(id, movie);
+            } catch (Exception e)
+            {
+                // Throwing a new exception
+                throw new InvalidOperationException("Update Failed", e);
+            }
         }
 
         // Use IEnumerable<T> for readonly lists of items
@@ -145,8 +171,16 @@ namespace MovieLibrary
         {
             //object value = null;
             //value.ToString();
+            // Generalize errors
+            try
+            {
+                return GetAllCore();
+            } catch (Exception e)
+            {
+                // Throwing a new exception
+                throw new InvalidOperationException("GetAll Failed", e);
+            }
 
-            return GetAllCore();
         }
 
         public Movie Get ( int id )
