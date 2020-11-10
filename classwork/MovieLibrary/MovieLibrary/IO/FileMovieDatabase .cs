@@ -41,49 +41,36 @@ namespace MovieLibrary.IO
         //public void Delete ( int id )
         protected override void DeleteCore ( int id )
         {
-            var movie = FindById(id);
-            if (movie != null)
+            var movies = new List<Movie>(GetAllCore());
+            foreach (var movie in movies)
             {
-                // Must use the same instance that is stored in the list so ref equality works
-                _movies.Remove(movie);
+                if (movie.Id == id)
+                {
+                    movies.Remove(movie);
+                    break;
+                };
             };
 
-            #region For Arrays
-            //for (var index = 0; index < _movies.Length; ++index)
-            //{
-            //    // Array element access ::= V[int]
-            //    //if (_movies[index] != null && _movies[index].Id == id)
-            //    if (_movies[index]?.Id == id)   // null conditional ?. if instance != null, access the member
-            //    {
-            //        _movies[index] = null;
-            //        return;
-            //    };
-            //}
-            #endregion
+            SaveMovies(movies);
         }
 
         protected override void UpdateCore ( int id, Movie movie )
         {
-            var existing = FindById(id);
-            CopyMovie(existing, movie);
+            var items = new List<Movie>(GetAllCore());
+            foreach (var item in items)
+            {
+                if (movie.Id == id)
+                {
+                    items.Remove(item);
+                    break;
+                };
+            };
 
-            //for (var index = 0; index < _movies.Length; ++index)
-            //{
-            //    if (_movies[index]?.Id == id)
-            //    {
-            //        // Clone it so we separate our value from argument
-            //        var item = CloneMovie(movie);
+            // Add new movie
+            movie.Id = id;
+            items.Add(movie);
 
-            //        item.Id = id;
-            //        _movies[index] = item;
-            //        return "";
-
-            //        // Just because we are doing this in memory
-            //        //movie.Id = id;
-            //        //_movies[index] = movie;
-            //        //return;
-            //    };
-            //}
+            SaveMovies(items);
         }
 
         // Use IEnumerable<T> for readonly lists of items
@@ -178,6 +165,38 @@ namespace MovieLibrary.IO
             };
 
             return movie;
+        }
+
+        private void SaveMovies ( IEnumerable<Movie> movies )
+        {
+            var lines = new List<string>();
+            foreach (var movie in movies)
+                lines.Add(SaveMovie(movie));
+
+            File.WriteAllLines(_filename, lines);
+        }
+
+        private string SaveMovie ( Movie movie )
+        {
+            // NOTE: No commas in string values
+
+            //Id, "name", "Description", "Rating", RunLength, ReleaseYear, IsClassic
+            var builder = new System.Text.StringBuilder();
+            builder.AppendFormat($"{movie.Id},");
+            builder.AppendFormat($"{EncloseQuotes(movie.Name)},");
+            builder.AppendFormat($"{EncloseQuotes(movie.Description)},");
+            builder.AppendFormat($"{EncloseQuotes(movie.Rating)},");
+            builder.AppendFormat($"{movie.Rating},");
+            builder.AppendFormat($"{movie.ReleaseYear},");
+            builder.AppendFormat($"{(movie.IsClassic ? 1 : 0)},");
+
+            return builder.ToString();
+            
+        }
+
+        private string EncloseQuotes ( string value )
+        {
+            return "\"" + value + "\"";
         }
 
         private string RemoveQuotes ( string value )
