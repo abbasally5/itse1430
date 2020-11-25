@@ -1,37 +1,33 @@
-﻿/*
- * Abbas Ally
- * ITSE 1430
- * Lab 3
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CharacterCreator.Winforms
 {
-    partial class AboutBox : Form
+    partial class AboutForm : Form
     {
-        public AboutBox ()
+        public AboutForm ()
         {
             InitializeComponent();
-            Text = String.Format("About {0}", AssemblyTitle);
-            labelProductName.Text = AssemblyProduct;
-            //this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            labelVersion.Text = "Abbas Ally";
-            labelCopyright.Text = AssemblyCopyright;
-            labelCompanyName.Text = AssemblyCompany;
-            textBoxDescription.Text = AssemblyDescription;
+            this.Text = String.Format("About {0}", AssemblyTitle);
+            this.labelProductName.Text = AssemblyProduct;
+            this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            this.labelCopyright.Text = AssemblyCopyright;
+            this.labelCompanyName.Text = AssemblyCompany;
+            this.textBoxDescription.Text = AssemblyDescription;
         }
 
         #region Assembly Attribute Accessors
 
         public string AssemblyTitle
         {
-            get {
+            get
+            {
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                 if (attributes.Length > 0)
                 {
@@ -47,14 +43,16 @@ namespace CharacterCreator.Winforms
 
         public string AssemblyVersion
         {
-            get {
+            get
+            {
                 return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
 
         public string AssemblyDescription
         {
-            get {
+            get
+            {
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
@@ -66,7 +64,8 @@ namespace CharacterCreator.Winforms
 
         public string AssemblyProduct
         {
-            get {
+            get
+            {
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 if (attributes.Length == 0)
                 {
@@ -78,7 +77,8 @@ namespace CharacterCreator.Winforms
 
         public string AssemblyCopyright
         {
-            get {
+            get
+            {
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 if (attributes.Length == 0)
                 {
@@ -90,7 +90,8 @@ namespace CharacterCreator.Winforms
 
         public string AssemblyCompany
         {
-            get {
+            get
+            {
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
                 if (attributes.Length == 0)
                 {
