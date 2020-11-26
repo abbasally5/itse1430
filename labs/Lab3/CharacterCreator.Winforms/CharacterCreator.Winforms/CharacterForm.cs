@@ -139,12 +139,12 @@ namespace CharacterCreator.Winforms
             character.Name = _txtName.Text;
             character.Profession = _comboProfession.SelectedItem.ToString();
             character.Race = _comboRace.SelectedItem.ToString();
-            character.Attributes[(int)Character.Attribute.Agility] = Convert.ToInt32(_numUpDownAgility.Value);
-            character.Attributes[(int)Character.Attribute.Charisma] = Convert.ToInt32(_numUpDownCharisma.Value);
-            character.Attributes[(int)Character.Attribute.Constitution] = Convert.ToInt32(_numUpDownConstitution.Value);
-            character.Attributes[(int)Character.Attribute.ForceAbility] = Convert.ToInt32(_numUpDownForceAbility.Value);
-            character.Attributes[(int)Character.Attribute.Intelligence] = Convert.ToInt32(_numUpDownIntelligence.Value);
-            character.Attributes[(int)Character.Attribute.Strength] = Convert.ToInt32(_numUpDownStrength.Value);
+            character.Attributes[(int)Character.Attribute.Agility] = (int)(_numUpDownAgility.Value);
+            character.Attributes[(int)Character.Attribute.Charisma] = (int)(_numUpDownCharisma.Value);
+            character.Attributes[(int)Character.Attribute.Constitution] = (int)(_numUpDownConstitution.Value);
+            character.Attributes[(int)Character.Attribute.ForceAbility] = (int)(_numUpDownForceAbility.Value);
+            character.Attributes[(int)Character.Attribute.Intelligence] = (int)(_numUpDownIntelligence.Value);
+            character.Attributes[(int)Character.Attribute.Strength] = (int)(_numUpDownStrength.Value);
             character.Description = _txtDescription.Text;
 
             var error = character.Validate();
@@ -205,7 +205,7 @@ namespace CharacterCreator.Winforms
         {
             var control = sender as NumericUpDown;
 
-            var attributeIntValue = Convert.ToInt32(control.Value);
+            var attributeIntValue = (int)(control.Value);
             if (attributeIntValue < 1 || attributeIntValue > 100)
             {
                 _errors.SetError(control, "Character Attribute must be between 1 and 100");

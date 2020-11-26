@@ -43,6 +43,11 @@ namespace CharacterCreator
         public const int MaxAttributeLevel = 100;
 
         /// <summary>
+        /// Gets the character Id
+        /// </summary>
+        public int Id { get; private set; }
+
+        /// <summary>
         /// Gets or sets the character name
         /// </summary>
         public string Name 
